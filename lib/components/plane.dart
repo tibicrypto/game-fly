@@ -84,7 +84,6 @@ class Plane extends PositionComponent {
     
     // Let's use a damping factor to make it controllable.
     double netForce = liftForce - weightForce;
-    double acceleration = netForce; // mass implicit or ignored in this specific simplified formula
     
     // Applying gravity scaling from config
     // Actually, usually Gravity is a constant downward acceleration.

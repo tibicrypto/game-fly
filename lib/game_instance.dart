@@ -1,13 +1,13 @@
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
-import 'components/plane.dart';
+import 'package:flame/components.dart';
+import 'components/plane.dart' as components;
 import 'components/terrain.dart';
 import 'components/cargo.dart';
 import 'config.dart';
 
 class SkyHaulerGame extends FlameGame with MultiTouchDragDetector, ScaleDetector {
-  late Plane plane;
+  late components.Plane plane;
   late Terrain terrain;
   
   // Game State
@@ -21,7 +21,7 @@ class SkyHaulerGame extends FlameGame with MultiTouchDragDetector, ScaleDetector
     add(terrain);
 
     // Setup Player
-    plane = Plane(
+    plane = components.Plane(
       stats: PlaneStats.standard,
       currentCargo: CargoType.gold, // Default start with gold for testing
     );
@@ -73,7 +73,7 @@ class SkyHaulerGame extends FlameGame with MultiTouchDragDetector, ScaleDetector
   // We need to detect 2 fingers holding.
   
   @override
-  void onScaleUpdate(ScaleUpdateDetails info) {
+  void onScaleUpdate(ScaleUpdateInfo info) {
     // info.pointerCount is the number of pointers interacting
     if (info.pointerCount == 2) {
       plane.isRefueling = true;
@@ -84,13 +84,13 @@ class SkyHaulerGame extends FlameGame with MultiTouchDragDetector, ScaleDetector
     // Swipe down detection for Jettison?
     // ScaleDetector/DragDetector might conflict.
     // Simple logic: If 1 finger and drag delta Y is positive large -> Jettison.
-    if (info.pointerCount == 1 && info.focalPointDelta.dy > 10) {
+    if (info.pointerCount == 1 && info.delta.global.y > 10) {
       plane.jettisonCargo();
     }
   }
   
   @override
-  void onScaleEnd(ScaleEndDetails info) {
+  void onScaleEnd(ScaleEndInfo info) {
     plane.isRefueling = false;
   }
 

@@ -9,8 +9,13 @@ class GameHud extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<double>(
-      stream: Stream.periodic(const Duration(milliseconds: 100), (_) => game.plane.fuel),
+      stream: Stream.periodic(const Duration(milliseconds: 100), (_) => 0),
       builder: (context, snapshot) {
+        // Wait until game has loaded
+        if (!game.isMounted) {
+          return const SizedBox.shrink();
+        }
+        
         return Positioned(
           top: 20,
           left: 20,

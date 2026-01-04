@@ -1,11 +1,10 @@
-import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_noise/fast_noise.dart';
 import '../config.dart';
 
 class Terrain extends PositionComponent {
-  final noise = PerlinNoise(frequency: GameConfig.noiseFrequency, octaves: 3);
+  final noise = PerlinNoise(frequency: GameConfig.noiseFrequency);
 
   // We render a chunk of terrain around the player or just infinite scrolling?
   // For scrolling, we usually generate points based on camera X.
@@ -25,7 +24,7 @@ class Terrain extends PositionComponent {
     // Let's assume standard Flame coordinates: (0,0) top-left.
     // Ground should be at Y = WorldHeight - NoiseHeight.
     
-    double n = noise.getSingleNoise(x, 0.0); // 2D noise with Y=0
+    double n = noise.getNoise2(x, 0.0); // 2D noise with Y=0
     return GameConfig.worldHeight - (n.abs() * GameConfig.noiseAmplitude); 
     // Using abs() to make hills, or just map (-1,1).
   }
